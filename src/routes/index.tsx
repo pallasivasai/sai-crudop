@@ -70,7 +70,7 @@ function CrudLab() {
     saveFields(next);
     setValues((prev) => {
       const base = emptyValues(next);
-      for (const f of next) if (f.key in prev) base[f.key] = prev[f.key];
+      for (const f of next) if (f.key in prev) base[f.key] = prev[f.key] ?? null;
       return base;
     });
   };

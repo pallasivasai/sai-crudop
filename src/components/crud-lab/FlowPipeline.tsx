@@ -32,7 +32,7 @@ export function FlowPipeline({
 }: {
   stage: FlowStage;
   op: string;
-  payload?: string;
+  payload?: string | undefined;
 }) {
   return (
     <div className="panel p-5">
