@@ -30,11 +30,11 @@ export const Route = createFileRoute("/")({
         content:
           "Design your own columns and watch the form and table auto-generate, then run live Create, Read, Update and Delete calls against a real database with an animated request pipeline.",
       },
-      { property: "og:title", content: "Sai CRUD Operations Lab" },
+      { property: "og:title", content: "Sai CRUD Operations Lab — dynamic fields, live database" },
       {
         property: "og:description",
         content:
-          "Pick fields, get an auto-generated form and table, and see every CRUD request travel from the browser to the database.",
+          "Design your own columns and watch the form and table auto-generate, then run live Create, Read, Update and Delete calls against a real database with an animated request pipeline.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
