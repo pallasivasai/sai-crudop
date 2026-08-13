@@ -5,13 +5,13 @@ export type FlowStage = 0 | 1 | 2 | 3 | 4;
 const stages = [
   {
     icon: MousePointerClick,
-    title: "Text field",
-    caption: "Nuvvu type chesina data (browser lo)",
+    title: "Dynamic form",
+    caption: "Nuvvu design chesina fields lo type chesina data",
   },
   {
     icon: Server,
     title: "App code",
-    caption: "React code supabase client ni call chestundi",
+    caption: "React values ni JSON object ga marchi client ni call chestundi",
   },
   {
     icon: Database,
@@ -21,19 +21,33 @@ const stages = [
   {
     icon: Table2,
     title: "demo_items table",
-    caption: "Row insert / update / delete / select avutundi",
+    caption: "data jsonb column lo row insert / update / delete avutundi",
   },
 ];
 
-export function FlowPipeline({ stage, op }: { stage: FlowStage; op: string }) {
+export function FlowPipeline({
+  stage,
+  op,
+  payload,
+}: {
+  stage: FlowStage;
+  op: string;
+  payload?: string | undefined;
+}) {
   return (
     <div className="panel p-5">
       <div className="flex items-center justify-between gap-3">
-        <p className="label-mono">Data flow</p>
+        <p className="label-mono">Step 4 · Data flow</p>
         <span className="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 font-mono text-[0.7rem] tracking-widest text-primary">
           {op}
         </span>
       </div>
+
+      {payload && (
+        <pre className="mt-4 max-h-32 overflow-auto rounded-lg border border-accent/30 bg-accent/5 p-3 font-mono text-[0.7rem] leading-relaxed text-accent">
+          {payload}
+        </pre>
+      )}
 
       <div className="mt-5 space-y-3">
         {stages.map((s, i) => {
