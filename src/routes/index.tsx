@@ -126,14 +126,16 @@ function CrudLab() {
   const fetchRows = async (): Promise<LabRow[]> => {
     const { data, error } = await supabase
       .from("demo_items")
-      .select("id, data, created_at")
+      .select("id, name, note, data, created_at")
       .order("created_at", { ascending: false });
     if (error) throw error;
-    return (data ?? []).map((r) => ({
-      id: r.id as string,
-      created_at: r.created_at as string,
-      data: (r.data ?? {}) as RowValues,
-    }));
+    return (data ?? []).map((r) => {
+      const json = (r.data ?? {}) as RowValues;
+      // legacy rows (created before dynamic fields) still carry name/note columns
+      const merged: RowValues =
+        Object.keys(json).length > 0 ? json : { name: r.name ?? null, note: r.note ?? null };
+      return { id: r.id as string, created_at: r.created_at as string, data: merged };
+    });
   };
 
   const itemsQuery = useQuery({ queryKey: ["demo_items"], queryFn: fetchRows });
