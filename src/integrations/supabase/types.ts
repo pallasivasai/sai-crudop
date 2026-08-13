@@ -17,6 +17,7 @@ export type Database = {
       demo_items: {
         Row: {
           created_at: string
+          data: Json
           id: string
           name: string
           note: string | null
@@ -24,6 +25,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          data?: Json
           id?: string
           name: string
           note?: string | null
@@ -31,6 +33,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          data?: Json
           id?: string
           name?: string
           note?: string | null
