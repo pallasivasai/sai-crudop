@@ -108,8 +108,9 @@ export function FieldDesigner({
         {fields.map((f) => (
           <li
             key={f.key}
-            className="animate-rise flex items-center gap-3 rounded-lg border border-border bg-secondary/40 px-3 py-2"
+            className="animate-rise rounded-lg border border-border bg-secondary/40 px-3 py-2"
           >
+          <div className="flex items-center gap-3">
             <span className="grid size-8 shrink-0 place-items-center rounded-md border border-primary/40 bg-primary/10 font-mono text-[0.65rem] text-primary">
               {TYPE_META[f.type].badge}
             </span>
@@ -117,8 +118,21 @@ export function FieldDesigner({
               <p className="truncate font-mono text-sm">{f.label}</p>
               <p className="truncate font-mono text-[0.7rem] text-muted-foreground">
                 data-&gt;&gt;'{f.key}' · {TYPE_META[f.type].sql}
+                {ruleSummary(f).length > 0 && ` · ${ruleSummary(f).join(" · ")}`}
               </p>
             </div>
+            <button
+              type="button"
+              onClick={() => setOpen(open === f.key ? null : f.key)}
+              title="Validation rules"
+              className={`rounded-md border px-2 py-1.5 transition-colors ${
+                ruleSummary(f).length > 0
+                  ? "border-destructive/50 bg-destructive/10 text-destructive"
+                  : "border-border text-muted-foreground"
+              }`}
+            >
+              <ShieldCheck className="size-3.5" />
+            </button>
             <button
               type="button"
               onClick={() => patch(f.key, { inForm: !f.inForm })}
@@ -151,6 +165,79 @@ export function FieldDesigner({
             >
               <Trash2 className="size-3.5" />
             </button>
+          </div>
+
+          {open === f.key && (
+            <div className="animate-rise mt-3 space-y-3 rounded-md border border-dashed border-border p-3">
+              <label className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                <input
+                  type="checkbox"
+                  checked={Boolean(f.rules?.required)}
+                  onChange={(e) =>
+                    patch(f.key, { rules: { ...f.rules, required: e.target.checked } })
+                  }
+                  className="size-4 accent-[var(--color-primary)]"
+                />
+                required (khali ga vadalakudadu)
+              </label>
+
+              {f.type !== "boolean" && (
+                <div className="flex flex-wrap gap-2">
+                  <label className="space-y-1">
+                    <span className="block font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+                      {f.type === "number" ? "min value" : "min length"}
+                    </span>
+                    <Input
+                      type="number"
+                      value={f.rules?.min ?? ""}
+                      onChange={(e) =>
+                        patch(f.key, {
+                          rules: {
+                            ...f.rules,
+                            min: e.target.value === "" ? null : Number(e.target.value),
+                          },
+                        })
+                      }
+                      className="h-9 w-28 font-mono"
+                    />
+                  </label>
+                  <label className="space-y-1">
+                    <span className="block font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+                      {f.type === "number" ? "max value" : "max length"}
+                    </span>
+                    <Input
+                      type="number"
+                      value={f.rules?.max ?? ""}
+                      onChange={(e) =>
+                        patch(f.key, {
+                          rules: {
+                            ...f.rules,
+                            max: e.target.value === "" ? null : Number(e.target.value),
+                          },
+                        })
+                      }
+                      className="h-9 w-28 font-mono"
+                    />
+                  </label>
+                  {f.type === "text" && (
+                    <label className="min-w-40 flex-1 space-y-1">
+                      <span className="block font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+                        pattern (regex)
+                      </span>
+                      <Input
+                        value={f.rules?.pattern ?? ""}
+                        onChange={(e) =>
+                          patch(f.key, { rules: { ...f.rules, pattern: e.target.value } })
+                        }
+                        placeholder="^[^@]+@[^@]+\\.[a-z]{2,}$"
+                        className="h-9 font-mono"
+                      />
+                    </label>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
           </li>
         ))}
         {fields.length === 0 && (
