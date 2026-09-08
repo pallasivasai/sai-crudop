@@ -16,6 +16,7 @@ export function DynamicTable({
   busy,
   editingId,
   editValues,
+  editErrors = {},
   onEditStart,
   onEditCancel,
   onEditChange,
@@ -27,6 +28,7 @@ export function DynamicTable({
   busy: boolean;
   editingId: string | null;
   editValues: RowValues;
+  editErrors?: Record<string, string>;
   onEditStart: (row: LabRow) => void;
   onEditCancel: () => void;
   onEditChange: (key: string, value: string | boolean) => void;
@@ -70,6 +72,7 @@ export function DynamicTable({
                       fields={fields}
                       values={editValues}
                       onChange={onEditChange}
+                      errors={editErrors}
                       compact
                     />
                     <div className="mt-3 flex gap-2">

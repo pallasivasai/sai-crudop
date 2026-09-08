@@ -1,3 +1,5 @@
+import { SqlBlock, SqlExplain } from "./SqlBlock";
+
 export type LogEntry = {
   id: number;
   op: string;
@@ -5,17 +7,18 @@ export type LogEntry = {
   detail: string;
   ok: boolean;
   time: string;
+  explain?: Array<[string, string]>;
 };
 
 export function ActivityLog({ entries }: { entries: LogEntry[] }) {
   return (
     <div className="panel p-5">
-      <p className="label-mono">Behind the scenes (SQL log)</p>
+      <p className="label-mono">Behind the scenes (SQL log + line-by-line meaning)</p>
       <div className="mt-4 space-y-3">
         {entries.length === 0 && (
           <p className="text-sm text-muted-foreground">
             Inka action cheyyaledu. Item add / edit / delete cheste, ikkada asalu DB ki
-            velle query kanipistundi.
+            velle query and daani prathi clause artham kanipistundi.
           </p>
         )}
         {entries.map((e) => (
@@ -30,9 +33,10 @@ export function ActivityLog({ entries }: { entries: LogEntry[] }) {
               </span>
               <span className="font-mono text-[0.7rem] text-muted-foreground">{e.time}</span>
             </div>
-            <pre className="mt-2 overflow-x-auto font-mono text-xs leading-relaxed text-foreground/90">
-              {e.sql}
-            </pre>
+            <div className="mt-2">
+              <SqlBlock sql={e.sql} />
+            </div>
+            {e.explain && <SqlExplain parts={e.explain} />}
             <p className="mt-2 text-xs text-muted-foreground">{e.detail}</p>
           </div>
         ))}
