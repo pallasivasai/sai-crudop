@@ -1,11 +1,19 @@
 export type FieldType = "text" | "number" | "date" | "boolean";
 
+export type FieldRules = {
+  required?: boolean;
+  min?: number | null;
+  max?: number | null;
+  pattern?: string;
+};
+
 export type LabField = {
   key: string;
   label: string;
   type: FieldType;
   inForm: boolean;
   inTable: boolean;
+  rules?: FieldRules;
 };
 
 export const FIELD_LIBRARY: Array<Omit<LabField, "inForm" | "inTable">> = [
