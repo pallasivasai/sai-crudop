@@ -204,7 +204,7 @@ export function parseCsv(text: string): string[][] {
 export function csvToRows(fields: LabField[], text: string): RowValues[] {
   const table = parseCsv(text);
   if (table.length < 2) return [];
-  const header = table[0].map((h) => h.trim());
+  const header = (table[0] ?? []).map((h) => h.trim());
   return table.slice(1).map((cells) => {
     const out: RowValues = {};
     for (const f of fields) {
