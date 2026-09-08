@@ -108,8 +108,9 @@ export function FieldDesigner({
         {fields.map((f) => (
           <li
             key={f.key}
-            className="animate-rise flex items-center gap-3 rounded-lg border border-border bg-secondary/40 px-3 py-2"
+            className="animate-rise rounded-lg border border-border bg-secondary/40 px-3 py-2"
           >
+          <div className="flex items-center gap-3">
             <span className="grid size-8 shrink-0 place-items-center rounded-md border border-primary/40 bg-primary/10 font-mono text-[0.65rem] text-primary">
               {TYPE_META[f.type].badge}
             </span>
@@ -117,8 +118,21 @@ export function FieldDesigner({
               <p className="truncate font-mono text-sm">{f.label}</p>
               <p className="truncate font-mono text-[0.7rem] text-muted-foreground">
                 data-&gt;&gt;'{f.key}' · {TYPE_META[f.type].sql}
+                {ruleSummary(f).length > 0 && ` · ${ruleSummary(f).join(" · ")}`}
               </p>
             </div>
+            <button
+              type="button"
+              onClick={() => setOpen(open === f.key ? null : f.key)}
+              title="Validation rules"
+              className={`rounded-md border px-2 py-1.5 transition-colors ${
+                ruleSummary(f).length > 0
+                  ? "border-destructive/50 bg-destructive/10 text-destructive"
+                  : "border-border text-muted-foreground"
+              }`}
+            >
+              <ShieldCheck className="size-3.5" />
+            </button>
             <button
               type="button"
               onClick={() => patch(f.key, { inForm: !f.inForm })}
