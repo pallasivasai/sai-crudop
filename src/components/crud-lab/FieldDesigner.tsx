@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Eye, EyeOff, Plus, Sparkles, Table2, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Plus, ShieldCheck, Sparkles, Table2, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   FIELD_LIBRARY,
   TYPE_META,
+  ruleSummary,
   slugify,
   type FieldType,
   type LabField,
@@ -22,6 +23,7 @@ export function FieldDesigner({
 }) {
   const [label, setLabel] = useState("");
   const [type, setType] = useState<FieldType>("text");
+  const [open, setOpen] = useState<string | null>(null);
 
   const used = new Set(fields.map((f) => f.key));
 
