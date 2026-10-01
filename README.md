@@ -176,3 +176,23 @@ The application is designed to make database concepts visible:
 
 - [Live App](https://sai-crudop.lovable.app)
 - [GitHub Repository](https://github.com/pallasivasai/sai-crudop)
+
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart LR
+    A[Field Designer] --> B[Dynamic React Form]
+    B --> C[JSON Object]
+    C --> D[Supabase / PostgreSQL]
+    D --> E[demo_items]
+    E --> F[Read / Fetch]
+    E --> G[Update]
+    E --> H[Delete]
+    F --> I[Generated Table]
+    G --> I
+    H --> I
+    B --> J[Generated SQL + Flow Panel]
+```
+
+The diagram represents the project's dynamic field configuration, JSONB storage, database CRUD operations, generated SQL, and table display.
